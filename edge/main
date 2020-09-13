@@ -1,18 +1,57 @@
 #!/usr/bin/python3
 
-import json
-from sender import Sender
-from reader import Reader
+# import json
+# from sender import Sender
+# from reader import Reader
 
-PORT = '/dev/ttyUSB0'
-BAUD = 9600
+# PORT = '/dev/ttyUSB0'
+# BAUD = 9600
 
-reader = Reader(port=PORT, baud=BAUD)
-sender = Sender(port=PORT, baud=BAUD)
+# reader = Reader(port=PORT, baud=BAUD)
+# sender = Sender(port=PORT, baud=BAUD)
 
-while(1):
-    presence = json.loads(reader.getData())['presence']
+import logging
+import datetime
 
-    if(presence == True):
-        sender.alimentar()
-        print('PET ALIMENTADO.\n')
+# Only feed on each n minutes 
+feedCountDown = 2
+trackedMinutes = 0
+
+def trackMinuteChange (minute):
+  global trackedMinutes 
+  trackedMinutes = minute
+
+def countDown():
+  global feedCountDown
+  feedCountDown -= 1
+
+def resetCountDown():
+  global feedCountDown
+  feedCountDown = 2
+
+def shouldFeedPet(presence):
+  return feedCountDown == 0 and presence
+
+def aMinuteHasPassed(nowInMinutes):
+  return nowInMinutes != trackedMinutes
+
+def feedPet():
+  print('PET ALIMENTADO.\n')
+  print(datetime.datetime.now())
+  logging.info('log: PET ALIMENTADO ON:')
+  logging.info(datetime.datetime.now())
+
+def getCurrentMinute():
+  return datetime.datetime.now().strftime("%M")
+
+while (1):
+    # presence = json.loads(reader.getData())['presence']
+    presence = True
+
+    if(aMinuteHasPassed(getCurrentMinute())): 
+      trackMinuteChange(getCurrentMinute())
+      countDown()
+
+    if (shouldFeedPet(presence)):
+        feedPet()
+        resetCountDown()
