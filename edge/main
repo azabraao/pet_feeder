@@ -43,7 +43,13 @@ def getCurrentMinute():
   return datetime.datetime.now().strftime("%M")
 
 while (1):
+    # previous logic:
     # presence = json.loads(reader.getData())['presence']
+
+    # if(presence == True):
+    #     sender.alimentar()
+    #     print('PET ALIMENTADO.\n')
+
     presence = True
 
     if(aMinuteHasPassed(getCurrentMinute())): 
