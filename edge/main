@@ -36,8 +36,6 @@ def aMinuteHasPassed(nowInMinutes):
   return nowInMinutes != trackedMinutes
 
 def feedPet():
-  print('PET ALIMENTADO.\n')
-  print(datetime.datetime.now())
   logging.info('log: PET ALIMENTADO ON:')
   logging.info(datetime.datetime.now())
 
