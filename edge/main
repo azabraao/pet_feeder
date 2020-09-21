@@ -1,14 +1,14 @@
 #!/usr/bin/python3
 
-# import json
-# from sender import Sender
-# from reader import Reader
+import json
+from sender import Sender
+from reader import Reader
 
-# PORT = '/dev/ttyUSB0'
-# BAUD = 9600
+PORT = '/dev/ttyUSB0'
+BAUD = 9600
 
-# reader = Reader(port=PORT, baud=BAUD)
-# sender = Sender(port=PORT, baud=BAUD)
+reader = Reader(port=PORT, baud=BAUD)
+sender = Sender(port=PORT, baud=BAUD)
 
 import logging
 import datetime
@@ -43,14 +43,9 @@ def getCurrentMinute():
   return datetime.datetime.now().strftime("%M")
 
 while (1):
-    # previous logic:
-    # presence = json.loads(reader.getData())['presence']
+    presence = json.loads(reader.getData())['presence']
 
-    # if(presence == True):
-    #     sender.alimentar()
-    #     print('PET ALIMENTADO.\n')
-
-    presence = True
+    # presence = True
 
     if(aMinuteHasPassed(getCurrentMinute())): 
       trackMinuteChange(getCurrentMinute())
